@@ -1,17 +1,22 @@
 <template>
   <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+    <YuformsHeader />
+    <YuformsContent />
+    <YuformsFooter />
   </div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
+import YuformsHeader from './components/YuformsHeader.vue'
+import YuformsContent from './components/YuformsContent.vue'
+import YuformsFooter from './components/YuformsFooter.vue'
 
 export default {
   name: 'App',
   components: {
-    HelloWorld
+    YuformsHeader,
+    YuformsContent,
+    YuformsFooter
   }
 }
 </script>
@@ -23,6 +28,6 @@ export default {
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
-  margin-top: 60px;
+  height: 9000px;
 }
 </style>
