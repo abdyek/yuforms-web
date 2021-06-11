@@ -1,23 +1,25 @@
 <template>
-  <div id="app">
-    <YuformsHeader />
-    <YuformsContent />
-    <YuformsFooter />
+    <div id="app">
+        <YuformsHeader />
+        <router-view/>
+        <YuformsFooter />
+    <!-- <div id="nav">
+      <router-link to="/">Home</router-link> |
+      <router-link to="/about">About</router-link>
+    </div>-->
   </div>
 </template>
 
 <script>
 import YuformsHeader from './components/YuformsHeader.vue'
-import YuformsContent from './components/YuformsContent.vue'
 import YuformsFooter from './components/YuformsFooter.vue'
 
 export default {
-  name: 'App',
-  components: {
-    YuformsHeader,
-    YuformsContent,
-    YuformsFooter
-  }
+    name: 'App',
+    components: {
+        YuformsHeader,
+        YuformsFooter
+    }
 }
 </script>
 
