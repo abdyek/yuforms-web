@@ -4,6 +4,6 @@
 
 <script>
 export default {
-  name: 'YuformsFooter',
+  name: 'Footer',
 }
 </script>

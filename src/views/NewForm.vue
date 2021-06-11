@@ -1,10 +1,22 @@
 <template>
     <div>
-        new form
+        <sui-container class="yuforms-container">
+            <sui-grid>
+                <sui-grid-row>
+                    <sui-grid-column :width="16" :stackable="true">
+                        <FormTitle />
+                    </sui-grid-column>
+                </sui-grid-row>
+            </sui-grid>
+        </sui-container>
     </div>
 </template>
 <script>
+import FormTitle from '@/components/FormTitle.vue'
 export default {
-    name: 'NewForm'
+    name: 'NewForm',
+    components: {
+        FormTitle
+    }
 }
 </script>

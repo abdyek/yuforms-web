@@ -9,6 +9,6 @@
 </template>
 <script>
 export default {
-    name: 'YuformsContent'
+    name: 'Content'
 }
 </script>

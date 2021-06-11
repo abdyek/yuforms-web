@@ -1,8 +1,8 @@
 <template>
     <div id="app">
-        <YuformsHeader />
+        <Header />
         <router-view/>
-        <YuformsFooter />
+        <Footer />
     <!-- <div id="nav">
       <router-link to="/">Home</router-link> |
       <router-link to="/about">About</router-link>
@@ -11,14 +11,14 @@
 </template>
 
 <script>
-import YuformsHeader from './components/YuformsHeader.vue'
-import YuformsFooter from './components/YuformsFooter.vue'
+import Header from './components/Header.vue'
+import Footer from './components/Footer.vue'
 
 export default {
     name: 'App',
     components: {
-        YuformsHeader,
-        YuformsFooter
+        Header,
+        Footer
     }
 }
 </script>

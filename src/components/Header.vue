@@ -1,29 +1,29 @@
 <template>
-    <sui-container id="yuforms-header-container">
+    <sui-container class="yuforms-container">
         <sui-grid>
             <sui-grid-row>
                 <sui-grid-column :width="8">
                     <h1>Yuforms</h1>
                 </sui-grid-column>
                 <sui-grid-column :width="8">
-                    <YuformsMenu />
+                    <Menu />
                 </sui-grid-column>
             </sui-grid-row>
         </sui-grid>
     </sui-container>
 </template>
 <script>
-import YuformsMenu from './YuformsMenu.vue'
+import Menu from './Menu.vue'
 export default {
-    name: 'YuformsHeader',
-    components: { YuformsMenu }
+    name: 'Header',
+    components: { Menu }
 }
 </script>
 <style>
 h1 {
     float:left;
 }
-#yuforms-header-container {
+.yuforms-container {
     padding:1.1rem;
 }
 </style>

@@ -8,7 +8,7 @@
 <script>
 import router from '@/router'
 export default {
-    name: 'YuformsMenu',
+    name: 'Menu',
     methods: {
         goNewFormPage() {
             if(router.currentRoute.name!=='newForm') {
