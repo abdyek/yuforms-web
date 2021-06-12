@@ -7,24 +7,19 @@
 </template>
 <script>
 import router from '@/router'
+
 export default {
     name: 'Menu',
     methods: {
         goNewFormPage() {
-            if(router.currentRoute.name!=='newForm') {
-                router.push({name:'newForm'})
-            }
+            router.push({name: 'newForm'})
         },
         goMyFormsPage() {
-            if(router.currentRoute.name!=='myForms') {
-                router.push({name:'myForms'})
-            }
+            router.push({name: 'myForms'})
         },
         goMyProfilePage() {
-            if(router.currentRoute.name!=='myProfile') {
-                router.push({name:'myProfile'})
-            }
-        },
+            router.push({name: 'myProfile'})
+        }
     }
 }
 </script>

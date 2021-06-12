@@ -23,7 +23,4 @@ export default {
 h1 {
     float:left;
 }
-.yuforms-container {
-    padding:1.1rem;
-}
 </style>

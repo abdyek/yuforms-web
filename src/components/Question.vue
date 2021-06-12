@@ -63,15 +63,6 @@ export default {
 h3 {
     text-align:left;
 }
-.float-left {
-    float:left;
-}
-.float-right {
-    float:right;
-}
-.text-align-left {
-    text-align:left;
-}
 .right-bottom {
     position: absolute;
     bottom:0;
