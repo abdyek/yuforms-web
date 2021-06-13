@@ -54,7 +54,7 @@ const routes = [
         component: NewForm
     },
     {
-        path: '/edit-form',
+        path: '/edit-form/:formSlug',
         name: 'editForm',
         component: EditForm
     }
