@@ -77,12 +77,21 @@ const getters = {
 const mutations = {
     setFormTitle(state, title) {
         state.formTitle = title
+    },
+    updateMyFormsModels(state) {
+        const models = []
+        // ^ will come from api
+        Vue.set(state, 'myFormsModels', models)
+        console.log(models)
     }
 }
 
 const actions = {
     setFormTitle({commit}, title) {
         commit('setFormTitle', title)
+    },
+    setMyFormsModels({commit}, models) {
+        commit('setMyFormsModels', models)
     }
 }
 

@@ -17,18 +17,33 @@
                 </sui-grid-column>
             </sui-grid-row>
         </sui-grid>
-        <sui-grid v-for="model in this.myFormsModels" :key="model.id">
-            <sui-grid-row>
-                <sui-grid-column :width="16" :stackable="true">
-                    <FormCard :model="model"/>
-                </sui-grid-column>
-            </sui-grid-row>
-        </sui-grid>
+        <div v-if="loaded===true">
+            <sui-grid v-for="model in this.myFormsModels" :key="model.id">
+                <sui-grid-row>
+                    <sui-grid-column :width="16" :stackable="true">
+                        <FormCard :model="model"/>
+                    </sui-grid-column>
+                </sui-grid-row>
+            </sui-grid>
+        </div>
+        <div v-else>
+            <sui-grid>
+                <sui-grid-row>
+                    <sui-grid-column :width="16" :stackable="true">
+                        <sui-grid :centered="true">
+                            <Loading />
+                        </sui-grid>
+                    </sui-grid-column>
+                </sui-grid-row>
+            </sui-grid>
+        </div>
+        
     </sui-container>
 </template>
 <script>
 import Vuex from 'vuex'
 import FormCard from '@/components/form/FormCard.vue'
+import Loading from '@/components/Loading.vue'
 export default {
     name: 'MyForms',
     computed: {
@@ -36,8 +51,19 @@ export default {
             'myFormsModels'
         ])
     },
+    data() {
+        return {
+            loaded:true
+        }
+    },
+    methods: {
+        ...Vuex.mapActions([
+            'updateMyFormsModels'
+        ]),
+    },
     components:{
         FormCard,
+        Loading
     }
 }
 </script>
