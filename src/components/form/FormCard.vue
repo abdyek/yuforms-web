@@ -31,6 +31,20 @@
                     </sui-grid-column>
                 </sui-grid-row>
             </sui-grid>
+            <sui-grid>
+                <sui-grid-row>
+                    <sui-grid-column :width="16">
+                        <div v-if="this.model.stillShared===false">
+                            <sui-button icon="users" content="Share All" color="teal" />
+                            <sui-button icon="user" content="Share Only Members" color="teal"/>
+                        </div>
+                        <div v-else>
+                            <sui-button icon="x icon" content="Stop Sharing" color="yellow"/>
+                        </div>
+                    </sui-grid-column>
+                </sui-grid-row>
+            </sui-grid>
+            <slot></slot>
         </sui-segment>
     </div>
 </template>
