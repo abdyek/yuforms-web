@@ -1,6 +1,6 @@
 <template>
     <h1 :contenteditable="true" @blur="changeTitle">
-        {{formTitle}}
+        {{newFormModel.formTitle}}
     </h1>
 </template>
 <script>
@@ -15,7 +15,7 @@ export default {
     },
     computed: {
         ...Vuex.mapState([
-            'formTitle'
+            'newFormModel'
         ])
     },
     methods: {

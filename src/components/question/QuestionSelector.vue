@@ -6,31 +6,54 @@
                 placeholder="Question Type"
                 selection
                 :options="options"
-                v-model="current"
+                v-model="type"
             />
         </sui-form-field>
     </sui-form>
 </template>
 <script>
+import Vuex from 'vuex'
 export default {
     name: "QuestionSelector",
+    props: {
+        questionId: {
+            type:Number
+        }
+    },
     data() {
         return {
-            current:0,
             options: [
                 {
                     text:'Short question',
-                    value:0
+                    value:'input-text'
                 },
                 {
                     text:'Select',
-                    value:1
+                    value:'input-radio'
                 },
                 {
                     text:'Multi select',
-                    value:2
+                    value:'input-checkboxes'
                 },
             ]
+        }
+    },
+    methods: {
+        ...Vuex.mapActions([
+            'setNewQuestionType'
+        ])
+    },
+    computed: {
+        ...Vuex.mapState([
+            'newFormModel'
+        ]),
+        type: {
+            get() {
+                return this.newFormModel.questions[this.questionId].formComponentType
+            },
+            set(type){
+                this.setNewQuestionType({'questionId': this.questionId, 'type': type})
+            }
         }
     }
 }

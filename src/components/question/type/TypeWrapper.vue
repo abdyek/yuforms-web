@@ -1,8 +1,8 @@
 <template>
     <div>
         <InputText v-if="this.type==='input-text'" :placeholder="question.questionText"/>
-        <InputSelect v-else-if="this.type==='input-radio'" :options="question.options"/>
-        <InputSelect v-else-if="this.type==='input-checkboxes'" :single="false" :options="question.options"/>
+        <InputSelect v-else-if="this.type==='input-radio'" :options="question.options" :questionId="question.id"/>
+        <InputSelect v-else-if="this.type==='input-checkboxes'" :single="false" :options="question.options" :questionId="question.id"/>
     </div>
 </template>
 <script>

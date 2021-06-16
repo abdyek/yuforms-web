@@ -8,9 +8,9 @@
     </div>
 </template>
 <script>
-import {default as QuestionDetailTypeOptions} from '@/components/questionDetailTypes/Options.vue' 
+import {default as QuestionDetailTypeOptions} from '@/components/question/creating/Options.vue' 
 export default {
-    name: 'QuestionCreatingDetailWrapper',
+    name: 'DetailWrapper',
     props: {
         detailType: {
             type: String,

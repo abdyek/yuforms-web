@@ -3,7 +3,7 @@
         <sui-form>
             <sui-form-fields grouped>
                 <sui-form-field v-for="opt in options" :key="opt.value">
-                    <sui-checkbox :radio="single===true" :name="opt.value" :label="opt.text" value="opt.value" />
+                    <sui-checkbox :radio="single===true" :name="questionId.toString()" :label="opt.text" value="opt.value" />
                 </sui-form-field>
             </sui-form-fields>
         </sui-form>
@@ -20,6 +20,9 @@ export default {
         options: {
             type:Array,
             required:true
+        },
+        questionId: {
+            type:Number
         }
     }
 }

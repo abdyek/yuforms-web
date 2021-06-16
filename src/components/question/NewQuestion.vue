@@ -3,7 +3,7 @@
         <sui-grid>
             <sui-grid-row>
                 <sui-grid-column :width="8" :stackable="true">
-                    <h3 contenteditable @blur="saveQuestion">{{question}}</h3>
+                    <h3 contenteditable @blur="saveQuestion">{{newQuestionModel.questionText}}</h3>
                 </sui-grid-column>
                 <sui-grid-column :width="8" :stackable="true">
                     <div class="float-right">
@@ -16,7 +16,7 @@
         <sui-grid>
             <sui-grid-row>
                 <sui-grid-column :width="16">
-                    <QuestionCreatingDetailWrapper detailType="options"/>
+                    <DetailWrapper :detailType="detailType"/>
                 </sui-grid-column>
             </sui-grid-row>
         </sui-grid>
@@ -24,7 +24,7 @@
             <sui-grid-row>
                 <sui-grid-column :width="8">
                     <div class="float-left">
-                        <QuestionSelector />
+                        <QuestionSelector :questionId="id"/>
                     </div>
                 </sui-grid-column>
                 <sui-grid-column :width="8">
@@ -39,23 +39,32 @@
     </sui-segment>
 </template>
 <script>
-import QuestionSelector from '@/components/QuestionSelector.vue'
-import QuestionCreatingDetailWrapper from '@/components/QuestionCreatingDetailWrapper.vue'
+import QuestionSelector from '@/components/question/QuestionSelector.vue'
+import DetailWrapper from '@/components/question/creating/DetailWrapper.vue'
 export default {
-    name: "Question",
+    name: "NewQuestion",
+    props: {
+        id: {
+            type:Number
+        },
+        newQuestionModel: {
+            type:Object
+        }
+    },
+    computed: {
+        detailType() {
+            const componentType = this.newQuestionModel.formComponentType
+            return (componentType==='input-radio' || componentType==='input-checkboxes')?'options':'empty'
+        }
+    },
     methods: {
         saveQuestion() {
             console.log("kayıt işlemi")
         }
     },
-    data: function() {
-        return {
-            question:'New Question'
-        }
-    },
     components: {
         QuestionSelector,
-        QuestionCreatingDetailWrapper
+        DetailWrapper
     }
 }
 </script>

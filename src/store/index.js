@@ -68,6 +68,7 @@ const state = {
             }
         }
     ],
+
     formModel: {
         "form": {
             "id": 1,
@@ -169,7 +170,50 @@ const state = {
                 ]
             }
         ]
-    }
+    },
+    newFormModel: {
+        "formTitle":"New Form Title",
+        "questions": [
+            {
+                "formComponentType":"input-text",
+                "questionText":"Öğrenci Numarası"
+            },
+            {
+                "formComponentType":"input-text",
+                "questionText":"Ad - Soyad"
+            },
+            {
+                "formComponentType":"input-radio",
+                "questionText":"Üye sayısı",
+                "options":[
+                    {
+                        "value":"bireysel"
+                    },
+                    {
+                        "value":"2-5"
+                    },
+                    {
+                        "value":"5 ve daha fazlası"
+                    }
+                ]
+            },
+            {
+                "formComponentType":"input-checkboxes",
+                "questionText":"Ne projesi?",
+                "options":[
+                    {
+                        "value":"Mobil"
+                    },
+                    {
+                        "value":"Web"
+                    },
+                    {
+                        "value":"Masaüstü"
+                    }
+                ]
+            }
+        ]
+    } 
 }
 
 const getters = {
@@ -178,7 +222,7 @@ const getters = {
 
 const mutations = {
     setFormTitle(state, title) {
-        state.formTitle = title
+        state.newFormModel.formTitle = title
     },
     updateMyFormsModels(state) {
         const models = []
@@ -188,6 +232,9 @@ const mutations = {
     },
     setFormModel(state, model) {
         Vue.set(state, 'formModel', model)
+    },
+    setNewQuestionType(state, arg) {
+        Vue.set(state.newFormModel.questions[arg['questionId']], 'formComponentType', arg['type'])
     }
 }
 
@@ -203,6 +250,9 @@ const actions = {
         const formModel = {};
         // ^ it will come from api
         commit('setFormModel', formModel)
+    },
+    setNewQuestionType({commit}, arg) {
+        commit('setNewQuestionType', arg)
     }
 }
 
