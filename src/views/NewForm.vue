@@ -11,7 +11,7 @@
             <sui-grid>
                 <sui-grid-row>
                     <sui-grid-column :stackable="true">
-                        <QuestionEditor v-for="(que, key) in newFormModel.questions" :newQuestionModel="que" :key="key" :id="key" />
+                        <QuestionEditor v-for="(que, key) in newFormModel.questions" :newQuestionModel="que" :key="key" :id="key" :newQuestionLabelVisible="true" />
                     </sui-grid-column>
                 </sui-grid-row>
             </sui-grid>

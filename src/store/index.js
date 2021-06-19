@@ -181,7 +181,10 @@ const state = {
                     {
                         "value":""
                     }
-                ]
+                ],
+                "forUI": {
+                    "new":false
+                }
             },
             {
                 "formComponentType":"input-text",
@@ -190,7 +193,10 @@ const state = {
                     {
                         "value":""
                     }
-                ]
+                ],
+                "forUI": {
+                    "new":false
+                }
             },
             {
                 "formComponentType":"input-radio",
@@ -208,7 +214,10 @@ const state = {
                     {
                         "value": ""
                     }
-                ]
+                ],
+                "forUI": {
+                    "new":false
+                }
             },
             {
                 "formComponentType":"input-checkboxes",
@@ -226,14 +235,19 @@ const state = {
                     {
                         "value": ""
                     }
-                ]
+                ],
+                "forUI": {
+                    "new":false
+                }
             }
         ]
     } 
 }
 
 const getters = {
-
+    getNewFormModel(state) {
+        return state.newFormModel
+    }
 }
 
 const mutations = {
@@ -261,12 +275,18 @@ const mutations = {
                 {
                     "value":""
                 }
-            ]
+            ],
+            "forUI": {
+                "new":true
+            }
         })
         Vue.set(state.newFormModel, 'questions', questions)
     },
     setOptions(state, args) {
         Vue.set(state.newFormModel.questions[args.questionId], 'options', args.options)
+    },
+    setNewFormModelQuestions(state, args) {
+        Vue.set(state.newFormModel, 'questions', args['questions'])
     }
 }
 
@@ -291,6 +311,11 @@ const actions = {
     },
     setOptions({commit}, args) {
         commit('setOptions', args)
+    },
+    removeNewQuestion({commit, getters}, args) {
+        const questions = [...getters.getNewFormModel.questions]
+        questions.splice(args['questionId'], 1)
+        commit('setNewFormModelQuestions', {'questions': questions})
     }
 }
 

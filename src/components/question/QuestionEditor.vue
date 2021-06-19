@@ -3,12 +3,17 @@
         <sui-grid>
             <sui-grid-row>
                 <sui-grid-column :width="8" :stackable="true">
+                    <div v-if="this.newQuestionLabelVisible && newQuestionModel.forUI.new" class="new-question-label">
+                        <a is="sui-label" color="blue" ribbon>
+                            New
+                        </a>
+                    </div>
                     <h3 contenteditable @blur="saveQuestion">{{newQuestionModel.questionText}}</h3>
                 </sui-grid-column>
                 <sui-grid-column :width="8" :stackable="true">
                     <div class="float-right">
-                        <sui-button icon="edit" color="olive" />
-                        <sui-button icon="trash" color="orange" />
+                        <sui-button v-if="newQuestionModel.forUI.new===false" icon="trash" color="red" @click="deleteQuestion" />
+                        <sui-button v-else icon="x icon" color="yellow" @click="cancelQuestion"/>
                     </div>
                 </sui-grid-column>
             </sui-grid-row>
@@ -30,7 +35,7 @@
                 <sui-grid-column :width="8">
                     <div class="float-right">
                         <div class="right-bottom">
-                            <sui-button color="green" content="Add" />
+                            <sui-icon name="arrows alternate" color="teal" size="large"/>
                         </div>
                     </div>
                 </sui-grid-column>
@@ -39,6 +44,7 @@
     </sui-segment>
 </template>
 <script>
+import Vuex from 'vuex'
 import QuestionSelector from '@/components/question/QuestionSelector.vue'
 import DetailWrapper from '@/components/question/creating/DetailWrapper.vue'
 export default {
@@ -49,6 +55,10 @@ export default {
         },
         newQuestionModel: {
             type:Object
+        },
+        newQuestionLabelVisible: {
+            type:Boolean,
+            default:false
         }
     },
     computed: {
@@ -58,8 +68,17 @@ export default {
         }
     },
     methods: {
+        ...Vuex.mapActions([
+            'removeNewQuestion'
+        ]),
         saveQuestion() {
             console.log("kayıt işlemi")
+        },
+        deleteQuestion() {
+            
+        },
+        cancelQuestion() {
+            this.removeNewQuestion({'questionId': this.id})
         }
     },
     components: {
@@ -70,12 +89,17 @@ export default {
 </script>
 <style scoped>
 h3 {
+    margin-top:0;
     text-align:left;
+    float:left;
 }
 .right-bottom {
     position: absolute;
     bottom:0;
     right:0;
     margin-right:1rem;
+}
+.new-question-label {
+    float:left;
 }
 </style>
