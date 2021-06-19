@@ -16,7 +16,7 @@
         <sui-grid>
             <sui-grid-row>
                 <sui-grid-column :width="16">
-                    <DetailWrapper :detailType="detailType"/>
+                    <DetailWrapper :detailType="detailType" :questionId="id"/>
                 </sui-grid-column>
             </sui-grid-row>
         </sui-grid>
@@ -42,7 +42,7 @@
 import QuestionSelector from '@/components/question/QuestionSelector.vue'
 import DetailWrapper from '@/components/question/creating/DetailWrapper.vue'
 export default {
-    name: "NewQuestion",
+    name: "QuestionEditor",
     props: {
         id: {
             type:Number

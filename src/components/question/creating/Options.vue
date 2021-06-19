@@ -9,8 +9,8 @@
             <sui-grid-row>
                 <sui-grid-column :width="16">
                     <sui-form>
-                        <sui-form-field v-for="opt in options" :key="opt.value">
-                            <input placeholder="Option" v-model="opt.content" @input="changeOption" :name="opt.value"/>
+                        <sui-form-field v-for="(opt, key) in optionsFromStore" :key="key">
+                            <input placeholder="Option" v-model="opt.value" @input="changeOption" :name="key"/>
                         </sui-form-field>
                     </sui-form>
                 </sui-grid-column>
@@ -19,32 +19,49 @@
     </div>
 </template>
 <script>
+import Vuex from 'vuex'
 export default {
     name:'Options',
+    props: {
+        questionId: {
+            type:Number,
+            required:true
+        }
+    },
     data() {
         return {
-            options: [
-                {
-                    content: "",
-                    value: 0
-                }
-            ]
+            options:[]
+        }
+    },
+    computed: {
+        ...Vuex.mapState([
+            'newFormModel'
+        ]),
+        optionsFromStore() {
+            return this.newFormModel.questions[this.questionId].options
         }
     },
     methods: {
-        changeOption(/*e*/) {
-            if(this.options[this.options.length-1].content.length) {
+        ...Vuex.mapActions([
+            'setOptions'
+        ]),
+        changeOption(e) {
+            this.options = [...this.optionsFromStore]
+            if(this.options[this.options.length-1].value.length) {
                 this.options.push({
-                    content:"",
-                    value:this.options.length+1
+                    value:"",
                 })
                 this.options.splice(1, -1)
-            } else if(this.options.length>1 && this.options[this.options.length-2].content.length===0) {
+            } else if(this.options[this.options.length-2].value.length===0) {
                 this.options.pop()
                 this.options.splice(1, -1)
-            } /*else if(e.target.value.length===0 && this.options[e.target.name]) {
-                
-            }*/
+            } else if(this.options[parseInt(e.target.name)].value.length===0) {
+                for(let i=parseInt(e.target.name);i<this.options.length-1;i++) {
+                    this.$set(this.options[i], 'value', this.options[i+1].value)
+                }
+                this.options.splice(-1, 1)
+            }
+            this.setOptions({'questionId': this.questionId, 'options': this.options})
         }
     }
 }

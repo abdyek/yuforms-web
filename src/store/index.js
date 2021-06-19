@@ -176,11 +176,21 @@ const state = {
         "questions": [
             {
                 "formComponentType":"input-text",
-                "questionText":"Öğrenci Numarası"
+                "questionText":"Öğrenci Numarası",
+                "options":[
+                    {
+                        "value":""
+                    }
+                ]
             },
             {
                 "formComponentType":"input-text",
-                "questionText":"Ad - Soyad"
+                "questionText":"Ad - Soyad",
+                "options":[
+                    {
+                        "value":""
+                    }
+                ]
             },
             {
                 "formComponentType":"input-radio",
@@ -194,6 +204,9 @@ const state = {
                     },
                     {
                         "value":"5 ve daha fazlası"
+                    },
+                    {
+                        "value": ""
                     }
                 ]
             },
@@ -209,6 +222,9 @@ const state = {
                     },
                     {
                         "value":"Masaüstü"
+                    },
+                    {
+                        "value": ""
                     }
                 ]
             }
@@ -217,7 +233,7 @@ const state = {
 }
 
 const getters = {
-    
+
 }
 
 const mutations = {
@@ -235,6 +251,22 @@ const mutations = {
     },
     setNewQuestionType(state, arg) {
         Vue.set(state.newFormModel.questions[arg['questionId']], 'formComponentType', arg['type'])
+    },
+    addNewQuestion(state) {
+        const questions = state.newFormModel.questions;
+        questions.push({
+            "formComponentType":"input-text",
+            "questionText":"New Question",
+            'options':[
+                {
+                    "value":""
+                }
+            ]
+        })
+        Vue.set(state.newFormModel, 'questions', questions)
+    },
+    setOptions(state, args) {
+        Vue.set(state.newFormModel.questions[args.questionId], 'options', args.options)
     }
 }
 
@@ -253,6 +285,12 @@ const actions = {
     },
     setNewQuestionType({commit}, arg) {
         commit('setNewQuestionType', arg)
+    },
+    addNewQuestion({commit}) {
+        commit('addNewQuestion')
+    },
+    setOptions({commit}, args) {
+        commit('setOptions', args)
     }
 }
 

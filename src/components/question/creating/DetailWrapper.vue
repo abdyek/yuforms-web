@@ -3,7 +3,7 @@
         <div v-if="detailType==='empty'">
         </div>
         <div v-else-if="detailType==='options'">
-            <QuestionDetailTypeOptions />
+            <QuestionDetailTypeOptions :questionId="questionId"/>
         </div>
     </div>
 </template>
@@ -15,6 +15,10 @@ export default {
         detailType: {
             type: String,
             required: true
+        },
+        questionId: {
+            type:Number,
+            required:true
         }
     },
     components: {

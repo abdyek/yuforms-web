@@ -11,14 +11,14 @@
             <sui-grid>
                 <sui-grid-row>
                     <sui-grid-column :stackable="true">
-                        <NewQuestion v-for="(que, key) in newFormModel.questions" :newQuestionModel="que" :key="key" :id="key" />
+                        <QuestionEditor v-for="(que, key) in newFormModel.questions" :newQuestionModel="que" :key="key" :id="key" />
                     </sui-grid-column>
                 </sui-grid-row>
             </sui-grid>
             <sui-grid>
                 <sui-grid-row>
                     <sui-grid-column :width="8">
-                        <sui-button icon="plus" color="teal" size="big" />
+                        <sui-button icon="plus" color="teal" size="big" @click="this.addNewQuestion" />
                     </sui-grid-column>
                     <sui-grid-column :width="8">
                         <div class="float-right">
@@ -33,7 +33,7 @@
 <script>
 import Vuex from 'vuex'
 import FormTitle from '@/components/FormTitle.vue'
-import NewQuestion from '@/components/question/NewQuestion.vue'
+import QuestionEditor from '@/components/question/QuestionEditor.vue'
 export default {
     name: 'NewForm',
     computed: {
@@ -41,9 +41,14 @@ export default {
             'newFormModel'
         ])
     },
+    methods: {
+        ...Vuex.mapActions([
+            'addNewQuestion'
+        ]),
+    },
     components: {
         FormTitle,
-        NewQuestion
+        QuestionEditor
     }
 }
 </script>
