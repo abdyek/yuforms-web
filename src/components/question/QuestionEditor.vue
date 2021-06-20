@@ -8,7 +8,7 @@
                             New
                         </a>
                     </div>
-                    <h3 contenteditable @blur="saveQuestion">{{newQuestionModel.questionText}}</h3>
+                    <contenteditable tag="h4" :contenteditable="true" v-model="questionText" :noNL="true" :noHTML="true" />
                 </sui-grid-column>
                 <sui-grid-column :width="8" :stackable="true">
                     <div class="float-right">
@@ -65,11 +65,20 @@ export default {
         detailType() {
             const componentType = this.newQuestionModel.formComponentType
             return (componentType==='input-radio' || componentType==='input-checkboxes')?'options':'empty'
+        },
+        questionText: {
+            get() {
+                return this.newQuestionModel.questionText
+            },
+            set(value) {
+                this.setQuestionText({'questionId': this.id, 'questionText': value})
+            }
         }
     },
     methods: {
         ...Vuex.mapActions([
-            'removeNewQuestion'
+            'removeNewQuestion',
+            'setQuestionText'
         ]),
         saveQuestion() {
             console.log("kayıt işlemi")
@@ -88,7 +97,7 @@ export default {
 }
 </script>
 <style scoped>
-h3 {
+h4 {
     margin-top:0;
     text-align:left;
     float:left;

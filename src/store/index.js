@@ -316,6 +316,11 @@ const actions = {
         const questions = [...getters.getNewFormModel.questions]
         questions.splice(args['questionId'], 1)
         commit('setNewFormModelQuestions', {'questions': questions})
+    },
+    setQuestionText({commit, getters}, args) {
+        const newFormModel = getters.getNewFormModel
+        newFormModel.questions[args['questionId']].questionText = args['questionText']
+        commit('setNewFormModelQuestions', {'questions':newFormModel.questions})
     }
 }
 
