@@ -1,4 +1,6 @@
-# yuforms-web
+# Yuforms Web
+
+This repository is front-end of Yuforms project. Yuforms main repository is [here](https://github.com/abdyek/yuforms)
 
 ## Project setup
 ```
