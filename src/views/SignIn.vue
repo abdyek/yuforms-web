@@ -46,6 +46,7 @@
 </template>
 <script>
 import router from '@/router'
+import axios from 'axios'
 export default {
     name: 'SignIn',
     data() {
@@ -63,7 +64,29 @@ export default {
         },
         sendRequest() {
             this.formLoading=true
-            // request will be here
+            axios.post('api/login', {
+                "email":this.email,
+                "password":this.password
+            }).then((response)=>{
+                this.formLoading = false
+                console.log(response)
+            }).catch((error)=>{
+                const code = error.response.status
+                if(code===401) {
+                    console.log("ehi ehi")
+                    this.errorMessage = 'Incorrect email or password'
+                    this.errorMessageShow = true
+                } else if(code===403) {
+                    this.errorMessage = 'Already signed in'
+                    this.errorMessageShow = true
+                } else if(code===400) {
+                    this.errorMessage = 'Invalid request'
+                    this.errorMessageShow = true
+                } else {
+                    console.log(error.response)
+                }
+                this.formLoading = false
+            })
         }
     }
 }
