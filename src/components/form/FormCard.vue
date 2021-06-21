@@ -35,11 +35,11 @@
                 <sui-grid-row>
                     <sui-grid-column :width="16">
                         <div v-if="this.model.stillShared===false">
-                            <sui-button icon="users" content="Share All" color="teal" />
-                            <sui-button icon="user" content="Share Only Members" color="teal"/>
+                            <sui-button icon="users" :loading="shareAllLoaded===false" :disabled="shareAllDisabled" content="Share All" color="teal" @click="handleShareAll"/>
+                            <sui-button icon="user" :loading="shareOnlyMembersLoaded===false" :disabled="shareOnlyMembersDisabled" content="Share Only Members" color="teal" @click="handleShareOnlyMembers"/>
                         </div>
                         <div v-else>
-                            <sui-button icon="x icon" content="Stop Sharing" color="yellow"/>
+                            <sui-button icon="x icon" :loading="stopSharingButtonLoaded===false" content="Stop Sharing" color="yellow" @click="handleStopSharing"/>
                         </div>
                     </sui-grid-column>
                 </sui-grid-row>
@@ -49,12 +49,17 @@
     </div>
 </template>
 <script>
+import { mapActions } from 'vuex'
 import router from '@/router'
 export default {
     name:'FormCard',
     props: {
         model: {
             type:Object,
+            required:true
+        },
+        index: {
+            type:Number,
             required:true
         }
     },
@@ -74,10 +79,46 @@ export default {
             return (this.model.stillShared===true && this.model.share.onlyMember===true)?'user':'users'
         }
     },
+    data() {
+        return {
+            stopSharingButtonLoaded:true,
+            shareAllLoaded:true,
+            shareOnlyMembersLoaded:true,
+            shareAllDisabled:false,
+            shareOnlyMembersDisabled: false
+        }
+    },
     methods: {
+        ...mapActions([
+            'stopSharing',
+            'startSharing'
+        ]),
         goEditFormPage() {
             router.push({name:'editForm', params: {formSlug: this.model.slug}})
+        },
+        handleStopSharing() {
+            this.stopSharingButtonLoaded = false
+            this.stopSharing({'formId': this.model.id, 'index':this.index}).then(()=>{
+                this.stopSharingButtonLoaded = true
+            })
+        },
+        handleShareAll() {
+            this.shareAllLoaded = false
+            this.shareOnlyMembersDisabled = true
+            this.startSharing({'formId': this.model.id, 'index': this.index, 'onlyMember':false}).then(()=>{
+                this.shareAllLoaded = true
+                this.shareOnlyMembersDisabled = false
+            })
+        },
+        handleShareOnlyMembers() {
+            this.shareOnlyMembersLoaded = false
+            this.shareAllDisabled = true
+            this.startSharing({'formId': this.model.id, 'index': this.index, 'onlyMember':true}).then(()=>{
+                this.shareOnlyMembersLoaded = true
+                this.shareAllDisabled = false
+            })
         }
+
     }
 }
 </script>

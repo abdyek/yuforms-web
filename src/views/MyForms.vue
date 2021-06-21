@@ -18,10 +18,10 @@
             </sui-grid-row>
         </sui-grid>
         <div v-if="loaded===true">
-            <sui-grid v-for="model in this.myFormsModels" :key="model.id">
+            <sui-grid v-for="(model, index) in this.myFormsModels" :key="model.id">
                 <sui-grid-row>
                     <sui-grid-column :width="16" :stackable="true">
-                        <FormCard :model="model"/>
+                        <FormCard :model="model" :index="index"/>
                     </sui-grid-column>
                 </sui-grid-row>
             </sui-grid>
@@ -53,17 +53,23 @@ export default {
     },
     data() {
         return {
-            loaded:true
+            loaded:false
         }
     },
     methods: {
         ...Vuex.mapActions([
-            'updateMyFormsModels'
+            'updateMyFormsModels',
+            'fetchMyForms'
         ]),
     },
     components:{
         FormCard,
         Loading
+    },
+    mounted() {
+        this.fetchMyForms().then(()=>{
+            this.loaded = true
+        })
     }
 }
 </script>

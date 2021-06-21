@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
+import axios from 'axios'
 
 Vue.use(Vuex)
 
@@ -247,6 +248,9 @@ const state = {
 const getters = {
     getNewFormModel(state) {
         return state.newFormModel
+    },
+    getMyFormsModels(state) {
+        return state.myFormsModels
     }
 }
 
@@ -254,11 +258,8 @@ const mutations = {
     setFormTitle(state, title) {
         state.newFormModel.formTitle = title
     },
-    updateMyFormsModels(state) {
-        const models = []
-        // ^ will come from api
-        Vue.set(state, 'myFormsModels', models)
-        console.log(models)
+    setMyFormsModels(state, args) {
+        Vue.set(state, 'myFormsModels', args.models)
     },
     setFormModel(state, model) {
         Vue.set(state, 'formModel', model)
@@ -294,9 +295,10 @@ const actions = {
     setFormTitle({commit}, title) {
         commit('setFormTitle', title)
     },
+    /*
     setMyFormsModels({commit}, models) {
         commit('setMyFormsModels', models)
-    },
+    },*/
     fetchModel({commit}, formId) {
         console.log(formId)
         const formModel = {};
@@ -321,7 +323,43 @@ const actions = {
         const newFormModel = getters.getNewFormModel
         newFormModel.questions[args['questionId']].questionText = args['questionText']
         commit('setNewFormModelQuestions', {'questions':newFormModel.questions})
+    },
+    fetchMyForms({commit}) {
+        return axios.get('/api/listMyForms').then((response)=>{
+            commit('setMyFormsModels', {'models': response.data.myForms})
+        }).catch((error)=>{
+            console.log(error);
+        })
+    },
+    stopSharing({commit, getters}, args) {
+        return axios.delete('/api/share', {
+            data: {
+                formId: args.formId
+            }
+        }).then((response)=>{
+            const models = getters.getMyFormsModels
+            models[args.index].stillShared = response.data.stillShared
+            models[args.index].share = response.data.share
+            commit('setMyFormsModels', {'models': models})
+        }).catch((error)=>{
+            console.log(error)
+        })
+    },
+    startSharing({commit, getters}, args) {
+        const index = args['index']
+        delete args.index
+        return axios.post('/api/share',
+            args
+        ).then((response)=>{
+            const models = getters.getMyFormsModels
+            models[index].stillShared = response.data.shillShared
+            models[index].share = response.data.share
+            commit('setMyFormsModels', {'models': models})
+        }).catch((error)=>{
+            console.log(error)
+        })
     }
+
 }
 
 const store = new Vuex.Store({
