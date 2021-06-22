@@ -43,6 +43,6 @@ export default {
     text-align:left;
 }
 .text-align-center {
-    text-align:center;
+    text-align:center !important;
 }
 </style>

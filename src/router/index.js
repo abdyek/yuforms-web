@@ -8,7 +8,8 @@ import MyForms from '@/views/MyForms.vue'
 import Form from '@/views/Form.vue'
 import NewForm from '@/views/NewForm.vue'
 import EditForm from '@/views/EditForm.vue'
-import Home from '../views/Home.vue'
+import Home from '@/views/Home.vue'
+import NotFound from '@/views/NotFound.vue'
 
 Vue.use(VueRouter)
 
@@ -44,7 +45,7 @@ const routes = [
         component: MyForms
     },
     {
-        path: '/form',
+        path: '/form/:formSlug',
         name: 'form',
         component: Form
     },
@@ -57,6 +58,11 @@ const routes = [
         path: '/edit-form/:formSlug',
         name: 'editForm',
         component: EditForm
+    },
+    {
+        path: '/404',
+        name: 'notFound',
+        component: NotFound
     }
 ]
 

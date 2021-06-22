@@ -312,7 +312,9 @@ const actions = {
             commit('setFormModel', response.data.form)
             commit('setQuestionModels', {'questions':response.data.questions})
         }).catch((error)=>{
-            console.log(error)
+            if(error.response.status===404) {
+                args.handle404Func()
+            }
         })
     },
     setNewQuestionType({commit}, arg) {

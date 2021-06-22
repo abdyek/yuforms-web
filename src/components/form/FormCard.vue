@@ -4,7 +4,7 @@
             <sui-grid>
                 <sui-grid-row>
                     <sui-grid-column :width="8">
-                        <h2><router-link to="form">{{model.name}}</router-link></h2>
+                        <h2 @click="goFormPage">{{model.name}}</h2>
                     </sui-grid-column>
                     <sui-grid-column :width="8">
                         <div class="float-right">
@@ -50,7 +50,6 @@
 </template>
 <script>
 import { mapActions } from 'vuex'
-import router from '@/router'
 export default {
     name:'FormCard',
     props: {
@@ -94,7 +93,12 @@ export default {
             'startSharing'
         ]),
         goEditFormPage() {
-            router.push({name:'editForm', params: {formSlug: this.model.slug}})
+            this.$router.push({name:'editForm', params: {formSlug: this.model.slug}})
+        },
+        goFormPage() {
+            if(this.$route.name!=='form') {
+                this.$router.push({name:'form', params: {formSlug: this.model.slug}})
+            }
         },
         handleStopSharing() {
             this.stopSharingButtonLoaded = false
@@ -126,10 +130,11 @@ export default {
 .form-card-buttons {
     float:right;
 }
-a {
+h2 {
     color:#444;
+    cursor:pointer;
 }
-a:hover {
-    color:#333;
+h2:hover {
+    color:#111;
 }
 </style>

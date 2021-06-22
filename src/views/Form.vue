@@ -64,7 +64,7 @@ export default {
         ])
     },
     mounted() {
-        this.fetchModel({'slug': '1t6634d99370d26a409d22'}).then(()=>{
+        this.fetchModel({'slug': this.$route.params.formSlug, 'handle404Func': ()=>{this.$router.push({'name': 'notFound'})}}).then(()=>{
             this.loaded = true
         })
     }
