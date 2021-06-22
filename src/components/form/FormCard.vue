@@ -56,11 +56,11 @@ export default {
     props: {
         model: {
             type:Object,
-            required:true
+            required:false
         },
         index: {
             type:Number,
-            required:true
+            default:null
         }
     },
     computed: {

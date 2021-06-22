@@ -4,13 +4,13 @@
             <sui-grid>
                 <sui-grid-row>
                     <sui-grid-column :width="16" :stackable="true">
-                        <FormCard :model="formModel.form">
+                        <FormCard :model="formModel" v-if="loaded">
                             <sui-grid>
                                 <sui-grid-row>
                                     <sui-grid-column>
                                         <sui-tab>
                                             <sui-tab-pane title="Questions">
-                                                <Questions :readOnly="true" :questions="formModel.questions"/>
+                                                <Questions :readOnly="true" :questions="questionModels"/>
                                             </sui-tab-pane>
                                             <sui-tab-pane title="Answers">
                                                 Answers will be here
@@ -20,6 +20,15 @@
                                 </sui-grid-row>
                             </sui-grid>
                         </FormCard>
+                        <sui-grid v-else>
+                            <sui-grid-row>
+                                <sui-grid-column :width="16" :stackable="true">
+                                    <sui-grid :centered="true">
+                                        <Loading />
+                                    </sui-grid>
+                                </sui-grid-column>
+                            </sui-grid-row>
+                        </sui-grid>
                     </sui-grid-column>
                 </sui-grid-row>
             </sui-grid>
@@ -27,19 +36,37 @@
     </div>
 </template>
 <script>
-import Vuex from 'vuex'
+import { mapState, mapActions } from 'vuex'
 import FormCard from '@/components/form/FormCard.vue'
 import Questions from '@/components/question/Questions.vue'
+import Loading from '@/components/Loading.vue'
 export default {
     name: 'Form',
     computed: {
-        ...Vuex.mapState([
-            'formModel'
+        ...mapState([
+            'formModel',
+            'questionModels'
         ])
+    },
+    data() {
+        return {
+            loaded:false
+        }
     },
     components:{
         FormCard,
-        Questions
+        Questions,
+        Loading
+    },
+    methods: {
+        ...mapActions([
+            'fetchModel'
+        ])
+    },
+    mounted() {
+        this.fetchModel({'slug': '1t6634d99370d26a409d22'}).then(()=>{
+            this.loaded = true
+        })
     }
 }
 </script>

@@ -71,107 +71,105 @@ const state = {
     ],
 
     formModel: {
-        "form": {
-            "id": 1,
-            "slug": "1t6634d99370d26a409d22",
-            "name": "Yazılım Mühendisliği Dersi Proje Formu",
-            "createDateTime": {
-                "date": "2021-06-13 02:27:13.000000",
+        "id": 1,
+        "slug": "1t6634d99370d26a409d22",
+        "name": "Yazılım Mühendisliği Dersi Proje Formu",
+        "createDateTime": {
+            "date": "2021-06-13 02:27:13.000000",
+            "timezone_type": 3,
+            "timezone": "Europe/Istanbul"
+        },
+        "lastEditDateTime": null,
+        "stillShared": true,
+        "share": {
+            "id": 4,
+            "startDateTime": {
+                "date": "2021-06-13 23:09:08.000000",
                 "timezone_type": 3,
                 "timezone": "Europe/Istanbul"
             },
-            "lastEditDateTime": null,
-            "stillShared": true,
-            "share": {
-                "id": 4,
-                "startDateTime": {
-                    "date": "2021-06-13 23:09:08.000000",
-                    "timezone_type": 3,
-                    "timezone": "Europe/Istanbul"
-                },
-                "onlyMember": true,
-                "submitCount": 0
-            }
-        },
-        "questions": [
-            {
-                "id": 1,
-                "questionText": "Öğrenci Numarası",
-                "formComponent": {
-                    "id": 1,
-                    "title": "Short Text",
-                    "name": "input-text",
-                    "hasOptions": false
-                },
-                "options": null
-            },
-            {
-                "id": 2,
-                "questionText": "Ad - Soyad",
-                "formComponent": {
-                    "id": 1,
-                    "title": "Short Text",
-                    "name": "input-text",
-                    "hasOptions": false
-                },
-                "options": null
-            },
-            {
-                "id": 3,
-                "questionText": "Üye sayısı",
-                "formComponent": {
-                    "id": 2,
-                    "title": "Select",
-                    "name": "input-radio",
-                    "hasOptions": true
-                },
-                "options": [
-                    {
-                        "id": 1,
-                        "value": "0",
-                        "text": "bireysel"
-                    },
-                    {
-                        "id": 2,
-                        "value": "1",
-                        "text": "2-5"
-                    },
-                    {
-                        "id": 3,
-                        "value": "2",
-                        "text": "5 ve daha fazlası"
-                    }
-                ]
-            },
-            {
-                "id": 4,
-                "questionText": "Ne projesi?",
-                "formComponent": {
-                    "id": 3,
-                    "title": "Multi Select",
-                    "name": "input-checkboxes",
-                    "hasOptions": true
-                },
-                "options": [
-                    {
-                        "id": 4,
-                        "value": "0",
-                        "text": "Mobil"
-                    },
-                    {
-                        "id": 5,
-                        "value": "1",
-                        "text": "Web"
-                    },
-                    {
-                        "id": 6,
-                        "value": "2",
-                        "text": "Masaüstü"
-                    }
-                ]
-            }
-        ]
+            "onlyMember": true,
+            "submitCount": 0
+        }
     },
+    "questionModels": [
+        {
+            "id": 1,
+            "questionText": "Öğrenci Numarası",
+            "formComponent": {
+                "id": 1,
+                "title": "Short Text",
+                "name": "input-text",
+                "hasOptions": false
+            },
+            "options": null
+        },
+        {
+            "id": 2,
+            "questionText": "Ad - Soyad",
+            "formComponent": {
+                "id": 1,
+                "title": "Short Text",
+                "name": "input-text",
+                "hasOptions": false
+            },
+            "options": null
+        },
+        {
+            "id": 3,
+            "questionText": "Üye sayısı",
+            "formComponent": {
+                "id": 2,
+                "title": "Select",
+                "name": "input-radio",
+                "hasOptions": true
+            },
+            "options": [
+                {
+                    "id": 1,
+                    "value": "0",
+                    "text": "bireysel"
+                },
+                {
+                    "id": 2,
+                    "value": "1",
+                    "text": "2-5"
+                },
+                {
+                    "id": 3,
+                    "value": "2",
+                    "text": "5 ve daha fazlası"
+                }
+            ]
+        },
+        {
+            "id": 4,
+            "questionText": "Ne projesi?",
+            "formComponent": {
+                "id": 3,
+                "title": "Multi Select",
+                "name": "input-checkboxes",
+                "hasOptions": true
+            },
+            "options": [
+                {
+                    "id": 4,
+                    "value": "0",
+                    "text": "Mobil"
+                },
+                {
+                    "id": 5,
+                    "value": "1",
+                    "text": "Web"
+                },
+                {
+                    "id": 6,
+                    "value": "2",
+                    "text": "Masaüstü"
+                }
+            ]
+        }
+    ],
     newFormModel: {
         "formTitle":"New Form Title",
         "questions": [
@@ -251,6 +249,9 @@ const getters = {
     },
     getMyFormsModels(state) {
         return state.myFormsModels
+    },
+    getFormModel(state) {
+        return state.formModel
     }
 }
 
@@ -288,6 +289,9 @@ const mutations = {
     },
     setNewFormModelQuestions(state, args) {
         Vue.set(state.newFormModel, 'questions', args['questions'])
+    },
+    setQuestionModels(state, args) {
+        Vue.set(state, 'questionModels', args['questions'])
     }
 }
 
@@ -299,11 +303,17 @@ const actions = {
     setMyFormsModels({commit}, models) {
         commit('setMyFormsModels', models)
     },*/
-    fetchModel({commit}, formId) {
-        console.log(formId)
-        const formModel = {};
-        // ^ it will come from api
-        commit('setFormModel', formModel)
+    fetchModel({commit}, args) {
+        return axios.get('/api/form', {
+            params: {
+                slug: args.slug
+            }
+        }).then((response)=>{
+            commit('setFormModel', response.data.form)
+            commit('setQuestionModels', {'questions':response.data.questions})
+        }).catch((error)=>{
+            console.log(error)
+        })
     },
     setNewQuestionType({commit}, arg) {
         commit('setNewQuestionType', arg)
@@ -337,10 +347,19 @@ const actions = {
                 formId: args.formId
             }
         }).then((response)=>{
-            const models = getters.getMyFormsModels
-            models[args.index].stillShared = response.data.stillShared
-            models[args.index].share = response.data.share
-            commit('setMyFormsModels', {'models': models})
+            if(args.index===null) {
+                // ^ from Form view
+                const formModel = getters.getFormModel
+                formModel.stillShared = response.data.stillShared
+                formModel.share = null //response.data.share
+                commit('setFormModel', formModel)
+            } else {
+                // ^ from MyForms view
+                const models = getters.getMyFormsModels
+                models[args.index].stillShared = response.data.stillShared
+                models[args.index].share = response.data.share
+                commit('setMyFormsModels', {'models': models})
+            }
         }).catch((error)=>{
             console.log(error)
         })
@@ -351,10 +370,19 @@ const actions = {
         return axios.post('/api/share',
             args
         ).then((response)=>{
-            const models = getters.getMyFormsModels
-            models[index].stillShared = response.data.shillShared
-            models[index].share = response.data.share
-            commit('setMyFormsModels', {'models': models})
+            if(index===null) {
+                // ^ from Form view
+                const formModel = getters.getFormModel
+                formModel.stillShared = response.data.stillShared
+                formModel.share = response.data.share
+                commit('setFormModel', formModel)
+            } else {
+                // ^ from MyForms view
+                const models = getters.getMyFormsModels
+                models[index].stillShared = response.data.stillShared
+                models[index].share = response.data.share
+                commit('setMyFormsModels', {'models': models})
+            }
         }).catch((error)=>{
             console.log(error)
         })
