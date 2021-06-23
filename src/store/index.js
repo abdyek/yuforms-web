@@ -1,11 +1,12 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 import axios from 'axios'
+import defaultValues from '@/defaultValues'
+import clone from 'just-clone'
 
 Vue.use(Vuex)
 
 const state = {
-    formTitle: 'New Form Title',
     myFormsModels: [
         {
             "id": 1,
@@ -170,77 +171,7 @@ const state = {
             ]
         }
     ],
-    newFormModel: {
-        "formTitle":"New Form Title",
-        "questions": [
-            {
-                "formComponentType":"input-text",
-                "questionText":"Öğrenci Numarası",
-                "options":[
-                    {
-                        "value":""
-                    }
-                ],
-                "forUI": {
-                    "new":false
-                }
-            },
-            {
-                "formComponentType":"input-text",
-                "questionText":"Ad - Soyad",
-                "options":[
-                    {
-                        "value":""
-                    }
-                ],
-                "forUI": {
-                    "new":false
-                }
-            },
-            {
-                "formComponentType":"input-radio",
-                "questionText":"Üye sayısı",
-                "options":[
-                    {
-                        "value":"bireysel"
-                    },
-                    {
-                        "value":"2-5"
-                    },
-                    {
-                        "value":"5 ve daha fazlası"
-                    },
-                    {
-                        "value": ""
-                    }
-                ],
-                "forUI": {
-                    "new":false
-                }
-            },
-            {
-                "formComponentType":"input-checkboxes",
-                "questionText":"Ne projesi?",
-                "options":[
-                    {
-                        "value":"Mobil"
-                    },
-                    {
-                        "value":"Web"
-                    },
-                    {
-                        "value":"Masaüstü"
-                    },
-                    {
-                        "value": ""
-                    }
-                ],
-                "forUI": {
-                    "new":false
-                }
-            }
-        ]
-    } 
+    newFormModel: clone(defaultValues.newFormModel)
 }
 
 const getters = {
@@ -289,6 +220,9 @@ const mutations = {
     },
     setNewFormModelQuestions(state, args) {
         Vue.set(state.newFormModel, 'questions', args['questions'])
+    },
+    setNewFormModel(state, args) {
+        Vue.set(state, 'newFormModel', args.model)
     },
     setQuestionModels(state, args) {
         Vue.set(state, 'questionModels', args['questions'])
@@ -388,6 +322,9 @@ const actions = {
         }).catch((error)=>{
             console.log(error)
         })
+    },
+    setDefaultNewFormModel({commit}) {
+        commit('setNewFormModel', {'model': defaultValues.newFormModel})
     }
 
 }
