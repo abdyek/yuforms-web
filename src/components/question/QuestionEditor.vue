@@ -29,7 +29,7 @@
             <sui-grid-row>
                 <sui-grid-column :width="8">
                     <div class="float-left">
-                        <QuestionSelector :questionId="id"/>
+                        <QuestionSelector :questionId="id" :disabled="this.newQuestionModel.forUI.new===false" />
                     </div>
                 </sui-grid-column>
                 <sui-grid-column :width="8">

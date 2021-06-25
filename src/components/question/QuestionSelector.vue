@@ -6,6 +6,7 @@
                 placeholder="Question Type"
                 selection
                 :options="options"
+                :disabled="this.disabled"
                 v-model="type"
             />
         </sui-form-field>
@@ -18,6 +19,10 @@ export default {
     props: {
         questionId: {
             type:Number
+        },
+        disabled: {
+            type:Boolean,
+            default:false
         }
     },
     data() {

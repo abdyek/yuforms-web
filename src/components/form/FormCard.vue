@@ -8,7 +8,7 @@
                     </sui-grid-column>
                     <sui-grid-column :width="8">
                         <div class="float-right">
-                            <sui-button icon="edit" color="olive" @click="goEditFormPage"/>
+                            <sui-button :disabled="this.model.stillShared===true" icon="edit" color="olive" @click="goEditFormPage"/>
                             <sui-button icon="trash" color="orange"/>
                         </div>
                     </sui-grid-column>

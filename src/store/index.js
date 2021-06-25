@@ -324,7 +324,10 @@ const actions = {
         })
     },
     setDefaultNewFormModel({commit}) {
-        commit('setNewFormModel', {'model': defaultValues.newFormModel})
+        commit('setNewFormModel', {'model': clone(defaultValues.newFormModel)})
+    },
+    setNewFormModel({commit}, args) {
+        commit('setNewFormModel', {'model': args.model})
     }
 
 }

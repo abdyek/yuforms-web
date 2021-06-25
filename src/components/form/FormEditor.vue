@@ -23,7 +23,8 @@
                         </sui-grid-column>
                         <sui-grid-column :width="8">
                             <div class="float-right">
-                                <sui-button color="blue" content="Create Form" size="big" @click="createForm" />
+                                <sui-button v-if="this.new===true" color="blue" content="Create Form" size="big" @click="createForm" />
+                                <sui-button v-else  color="green" content="Edit Form" size="big" @click="editForm" />
                             </div>
                         </sui-grid-column>
                     </sui-grid-row>
@@ -49,17 +50,22 @@ import QuestionEditor from '@/components/question/QuestionEditor.vue'
 import Loading from '@/components/Loading.vue'
 import clone from 'just-clone'
 import Swal from 'sweetalert2'
+import { newFormModelFromFormResponse, preparePutFormRequest } from '@/tools'
 export default {
     name: 'FormEditor',
     props: {
         new:{
             type:Boolean,
             default:true
+        },
+        formSlug: {
+            type:String
         }
     },
     data() {
         return {
-            loaded: true
+            loaded: true,
+            formModel:{}
         }
     },
     computed: {
@@ -70,10 +76,33 @@ export default {
             return this.new===false
         }
     },
+    mounted() {
+        if(this.new===false) {
+            this.loaded = false
+            axios.get('/api/form', {
+                params: {
+                    slug: this.formSlug
+                }
+            }).then((response)=>{
+                if(response.data.form.stillShared===true) {
+                    this.$router.push({'name': 'form', params:{'formSlug': this.$route.params.formSlug}})
+                }
+                const newForm = newFormModelFromFormResponse(response.data)
+                this.setNewFormModel({'model':newForm})
+            }).catch((error)=>{
+                if(error.response.status===404) {
+                    this.$router.push({'name': 'notFound'})
+                }
+            }).then(()=>{
+                this.loaded = true
+            })
+        }
+    },
     methods: {
         ...mapActions([
             'addNewQuestion',
-            'setDefaultNewFormModel'
+            'setDefaultNewFormModel',
+            'setNewFormModel'
         ]),
         createForm() {
             this.loaded = false
@@ -99,6 +128,25 @@ export default {
                     Swal.fire('400', 'Bad request', 'error')
                 }
                 this.loaded = true
+            })
+        },
+        editForm() {
+            this.loaded = true
+            const newFormModel = clone(this.newFormModel)
+            axios.put('/api/form', 
+                preparePutFormRequest(newFormModel)
+            ).then(()=>{
+                this.loaded = true
+                this.setDefaultNewFormModel()
+                this.$router.push({'name': 'form', params:{'formSlug': this.$route.params.formSlug}})
+            }).catch((error)=>{
+                if(error.response.status===422) {
+                    Swal.fire('You cannot change open forms', 'Please stop sharing to change it')
+                } else if(error.response.status===403) {
+                    Swal.fire('403', 'You are not authorized for it. Are you sure you are sign in?', 'error')
+                } else if(error.response.status===404) {
+                    Swal.fire('404', 'Not found the form', 'error')
+                }
             })
         }
     },
