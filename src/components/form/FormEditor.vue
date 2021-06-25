@@ -12,7 +12,7 @@
                 <sui-grid>
                     <sui-grid-row>
                         <sui-grid-column :stackable="true">
-                            <QuestionEditor v-for="(que, key) in newFormModel.questions" :newQuestionModel="que" :key="key" :id="key" :newQuestionLabelVisible="newQuestionLabelVisible"/>
+                            <QuestionEditor v-for="(que, key) in newFormModel.questions" :newQuestionModel="que" :key="key" :id="key" :newQuestionLabelVisible="newQuestionLabelVisible" @changeNoticeToDelete="changeNoticeToDelete"/>
                         </sui-grid-column>
                     </sui-grid-row>
                 </sui-grid>
@@ -24,7 +24,7 @@
                         <sui-grid-column :width="8">
                             <div class="float-right">
                                 <sui-button v-if="this.new===true" color="blue" content="Create Form" size="big" @click="createForm" />
-                                <sui-button v-else  color="green" content="Edit Form" size="big" @click="editForm" />
+                                <sui-button v-else  color="green" content="Edit Form" size="big" @click="editFormWrapper" />
                             </div>
                         </sui-grid-column>
                     </sui-grid-row>
@@ -65,7 +65,9 @@ export default {
     data() {
         return {
             loaded: true,
-            formModel:{}
+            formModel:{},
+            noticeToDelete:false,
+            willBeDeletedCount:0
         }
     },
     computed: {
@@ -130,6 +132,28 @@ export default {
                 this.loaded = true
             })
         },
+        editFormWrapper() {
+            if(this.noticeToDelete===true) {
+                this.editFormWithNotice()
+            } else {
+                this.editForm()
+            }
+        },
+        editFormWithNotice() {
+            Swal.fire({
+                title: 'Do you want to change?',
+                text: "You removed " + this.willBeDeletedCount + " questions. If you change the form questions will be deleted with answers",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes, change it!'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    this.editForm()
+                }
+            })
+        },
         editForm() {
             this.loaded = true
             const newFormModel = clone(this.newFormModel)
@@ -148,6 +172,10 @@ export default {
                     Swal.fire('404', 'Not found the form', 'error')
                 }
             })
+        },
+        changeNoticeToDelete() {
+            this.noticeToDelete = true
+            this.willBeDeletedCount++
         }
     },
     components: {

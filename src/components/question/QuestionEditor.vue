@@ -84,7 +84,8 @@ export default {
             console.log("kayıt işlemi")
         },
         deleteQuestion() {
-            
+            this.$emit('changeNoticeToDelete')
+            this.removeNewQuestion({'questionId': this.id})
         },
         cancelQuestion() {
             this.removeNewQuestion({'questionId': this.id})
