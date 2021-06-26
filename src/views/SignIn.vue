@@ -69,11 +69,12 @@ export default {
                 "password":this.password
             }).then((response)=>{
                 this.formLoading = false
-                console.log(response)
+                this.$store.commit('setWho', response.data.who)
+                router.push({name: 'myForms'})
             }).catch((error)=>{
+                console.log(error)
                 const code = error.response.status
                 if(code===401) {
-                    console.log("ehi ehi")
                     this.errorMessage = 'Incorrect email or password'
                     this.errorMessageShow = true
                 } else if(code===403) {

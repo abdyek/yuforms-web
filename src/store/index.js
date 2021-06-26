@@ -7,6 +7,7 @@ import clone from 'just-clone'
 Vue.use(Vuex)
 
 const state = {
+    who: 'guest',
     myFormsModels: [
         {
             "id": 1,
@@ -226,6 +227,9 @@ const mutations = {
     },
     setQuestionModels(state, args) {
         Vue.set(state, 'questionModels', args['questions'])
+    },
+    setWho(state, who) {
+        state.who = who
     }
 }
 
