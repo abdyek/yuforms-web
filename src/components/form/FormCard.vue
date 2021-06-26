@@ -9,7 +9,7 @@
                     <sui-grid-column :width="8">
                         <div class="float-right">
                             <sui-button :disabled="this.model.stillShared===true" icon="edit" color="olive" @click="goEditFormPage"/>
-                            <sui-button icon="trash" color="orange"/>
+                            <sui-button icon="trash" color="red" @click="deleteForm"/>
                         </div>
                     </sui-grid-column>
                 </sui-grid-row>
@@ -50,6 +50,8 @@
 </template>
 <script>
 import { mapActions } from 'vuex'
+import Swal from 'sweetalert2'
+import axios from 'axios'
 export default {
     name:'FormCard',
     props: {
@@ -90,7 +92,8 @@ export default {
     methods: {
         ...mapActions([
             'stopSharing',
-            'startSharing'
+            'startSharing',
+            'removeFormFromMyFormsModels'
         ]),
         goEditFormPage() {
             this.$router.push({name:'editForm', params: {formSlug: this.model.slug}})
@@ -121,8 +124,44 @@ export default {
                 this.shareOnlyMembersLoaded = true
                 this.shareAllDisabled = false
             })
+        },
+        deleteForm() {
+            Swal.fire({
+                title: 'Are you sure?',
+                text: "The form will be deleted with its answers",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes, delete it!'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    axios.delete('/api/form',{
+                        data: {
+                            id: this.model.id
+                        }
+                    }).then((response)=>{
+                        if(response.data.state==='success') {
+                            this.removeFormFromMyFormsModels({formId:this.model.id})
+                            Swal.fire({
+                                icon: 'success',
+                                title: 'Succcessfully deleted',
+                                showConfirmButton: true,
+                            })
+                        }
+                    }).catch((error)=>{
+                        if(error.response.status===404) {
+                            Swal.fire({
+                                icon: 'error',
+                                title: '404',
+                                text: 'Form not found',
+                                showConfirmButton: true,
+                            })
+                        }
+                    })
+                }
+            })
         }
-
     }
 }
 </script>

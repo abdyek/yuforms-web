@@ -328,6 +328,11 @@ const actions = {
     },
     setNewFormModel({commit}, args) {
         commit('setNewFormModel', {'model': args.model})
+    },
+    removeFormFromMyFormsModels({commit, getters}, args) {
+        let myFormsModels = clone(getters.getMyFormsModels)
+        myFormsModels = myFormsModels.filter((model)=>model.id!==args.formId)
+        commit('setMyFormsModels', {models: myFormsModels})
     }
 
 }
