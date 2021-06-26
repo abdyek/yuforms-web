@@ -34,8 +34,8 @@
                 </sui-grid-column>
                 <sui-grid-column :width="8">
                     <div class="float-right">
-                        <div class="right-bottom">
-                            <sui-icon name="arrows alternate" color="teal" size="large"/>
+                        <div class="right-bottom handle">
+                            <sui-icon name="arrows alternate" color="grey" size="large"/>
                         </div>
                     </div>
                 </sui-grid-column>
@@ -111,5 +111,8 @@ h4 {
 }
 .new-question-label {
     float:left;
+}
+.handle {
+    cursor:move;
 }
 </style>

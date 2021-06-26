@@ -12,7 +12,9 @@
                 <sui-grid>
                     <sui-grid-row>
                         <sui-grid-column :stackable="true">
-                            <QuestionEditor v-for="(que, key) in newFormModel.questions" :newQuestionModel="que" :key="key" :id="key" :newQuestionLabelVisible="newQuestionLabelVisible" @changeNoticeToDelete="changeNoticeToDelete"/>
+                            <draggable :list="questions" handle=".handle">
+                                <QuestionEditor v-for="(que, key) in questions" :newQuestionModel="que" :key="key" :id="key" :newQuestionLabelVisible="newQuestionLabelVisible" @changeNoticeToDelete="changeNoticeToDelete"/>
+                            </draggable>
                         </sui-grid-column>
                     </sui-grid-row>
                 </sui-grid>
@@ -51,6 +53,7 @@ import Loading from '@/components/Loading.vue'
 import clone from 'just-clone'
 import Swal from 'sweetalert2'
 import { newFormModelFromFormResponse, preparePutFormRequest } from '@/tools'
+import draggable from 'vuedraggable'
 export default {
     name: 'FormEditor',
     props: {
@@ -76,6 +79,14 @@ export default {
         ]),
         newQuestionLabelVisible() {
             return this.new===false
+        },
+        questions: {
+            get() {
+                return this.newFormModel.questions
+            },
+            set(value) {
+                this.$store.commit('setNewFormModelQuestions', {'questions': value})
+            }
         }
     },
     mounted() {
@@ -181,7 +192,8 @@ export default {
     components: {
         FormTitle,
         QuestionEditor,
-        Loading
+        Loading,
+        draggable
     }
 }
 </script>
