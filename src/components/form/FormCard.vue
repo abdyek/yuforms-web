@@ -142,7 +142,11 @@ export default {
                         }
                     }).then((response)=>{
                         if(response.data.state==='success') {
-                            this.removeFormFromMyFormsModels({formId:this.model.id})
+                            if(this.$router.currentRoute.name==='myForms') {
+                                this.removeFormFromMyFormsModels({formId:this.model.id})
+                            } else if(this.$router.currentRoute.name==='form') {
+                                this.$router.push({name: 'myForms'})
+                            }
                             Swal.fire({
                                 icon: 'success',
                                 title: 'Succcessfully deleted',
