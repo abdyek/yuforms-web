@@ -10,6 +10,7 @@ import NewForm from '@/views/NewForm.vue'
 import EditForm from '@/views/EditForm.vue'
 import Home from '@/views/Home.vue'
 import NotFound from '@/views/NotFound.vue'
+import Submit from '@/views/Submit.vue'
 
 Vue.use(VueRouter)
 
@@ -63,6 +64,11 @@ const routes = [
         path: '/404',
         name: 'notFound',
         component: NotFound
+    },
+    {
+        path: '/submit/:formSlug',
+        name: 'submit',
+        component: Submit
     }
 ]
 

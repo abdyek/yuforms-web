@@ -52,3 +52,48 @@ export const preparePutFormRequest = (model) =>{
     }
     return model
 }
+
+export const generateEmptyAnswers = (questions) => {
+    const answers = {}
+    for(let i=0;i<questions.length;i++) {
+        let que = questions[i]
+        if(que.formComponent.name==='input-checkboxes') {
+            // ^ here is not healthy and dynamic, multiResponse info must return in question model by API
+            let obj = {}
+            for(let j=0; j<que.options.length;j++) {
+                obj[que.options[j].id] = false
+            }
+            answers[que.id] = obj
+        } else {
+            answers[que.id] = ""
+        }
+    }
+    return answers
+}
+
+export const prepareToSendSubmit = (answers) => {
+    const questionIds = Object.keys(answers)
+    const arr = []
+    for(let i=0; i<questionIds.length; i++) {
+        if(typeof answers[questionIds[i]]==='object') {
+            let value = '';
+            let optionIds = Object.keys(answers[questionIds[i]])
+            for(let j=0; j<optionIds.length; j++) {
+                if(answers[questionIds[i]][optionIds[j]]===true) {
+                    value += optionIds[j] + '-'
+                }
+            }
+            value = (value.substr(-1)==='-')?value.substr(0, value.length-1):value
+            arr.push({
+                'questionId':questionIds[i],
+                'answer':value
+            })
+        } else {
+            arr.push({
+                'questionId':questionIds[i],
+                'answer':answers[questionIds[i]]
+            })
+        }
+    }
+    return arr;
+}

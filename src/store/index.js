@@ -3,6 +3,7 @@ import Vuex from 'vuex'
 import axios from 'axios'
 import defaultValues from '@/defaultValues'
 import clone from 'just-clone'
+import { generateEmptyAnswers } from '@/tools'
 
 Vue.use(Vuex)
 
@@ -172,7 +173,9 @@ const state = {
             ]
         }
     ],
-    newFormModel: clone(defaultValues.newFormModel)
+    newFormModel: clone(defaultValues.newFormModel),
+    submitted:false,
+    answers: {}
 }
 
 const getters = {
@@ -184,6 +187,9 @@ const getters = {
     },
     getFormModel(state) {
         return state.formModel
+    },
+    getAnswers(state) {
+        return state.answers
     }
 }
 
@@ -230,6 +236,12 @@ const mutations = {
     },
     setWho(state, who) {
         state.who = who
+    },
+    setSubmitted(state, submit) {
+        state.submitted = submit
+    },
+    setAnswers(state, answers) {
+        Vue.set(state, 'answers', answers)
     }
 }
 
@@ -249,6 +261,7 @@ const actions = {
         }).then((response)=>{
             commit('setFormModel', response.data.form)
             commit('setQuestionModels', {'questions':response.data.questions})
+            commit('setAnswers', generateEmptyAnswers(response.data.questions))
         }).catch((error)=>{
             if(error.response.status===404) {
                 args.handle404Func()
@@ -337,6 +350,23 @@ const actions = {
         let myFormsModels = clone(getters.getMyFormsModels)
         myFormsModels = myFormsModels.filter((model)=>model.id!==args.formId)
         commit('setMyFormsModels', {models: myFormsModels})
+    },
+    setAnswers({commit}, answers) {
+        commit('setAnswers', answers)
+    },
+    fillAnswers({commit, getters}, answers) {
+        const answersInState = clone(getters.getAnswers)
+        for(let i=0;i<answers.length;i++) {
+            if(answers[i].multiResponse) {
+                const optionIds = answers[i].answer.split('-')
+                for(let j=0;j<optionIds.length;j++) {
+                    answersInState[answers[i].questionId][optionIds[j]] = true
+                }
+            } else {
+                answersInState[answers[i].questionId] = answers[i].answer
+            }
+        }
+        commit('setAnswers', answersInState)
     }
 
 }

@@ -1,6 +1,6 @@
 <template>
     <div>
-        <InputText v-if="this.type==='input-text'" :placeholder="question.questionText"/>
+        <InputText v-if="this.type==='input-text'" :placeholder="question.questionText" :questionId="question.id"/>
         <InputSelect v-else-if="this.type==='input-radio'" :options="question.options" :questionId="question.id"/>
         <InputSelect v-else-if="this.type==='input-checkboxes'" :single="false" :options="question.options" :questionId="question.id"/>
     </div>
