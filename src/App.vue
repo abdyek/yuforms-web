@@ -28,6 +28,9 @@ export default {
     mounted() {
         axios.get('/api/me').then((response)=>{
             this.$store.commit('setWho', response.data.who)
+            if(response.data.who==='member') {
+                this.$store.commit('setMember', response.data.info)
+            }
             this.loaded = true
         }).catch((error)=>{
             console.log(error)

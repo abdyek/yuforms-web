@@ -9,6 +9,7 @@ Vue.use(Vuex)
 
 const state = {
     who: 'guest',
+    member: {},
     myFormsModels: [
         {
             "id": 1,
@@ -236,6 +237,9 @@ const mutations = {
     },
     setWho(state, who) {
         state.who = who
+    },
+    setMember(state, member) {
+        state.member = member
     },
     setSubmitted(state, submit) {
         state.submitted = submit

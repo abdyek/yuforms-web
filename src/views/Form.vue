@@ -13,7 +13,24 @@
                                                 <Questions :readOnly="true" :questions="questionModels"/>
                                             </sui-tab-pane>
                                             <sui-tab-pane title="Answers">
-                                                Answers will be here
+                                                <sui-grid>
+                                                    <sui-grid-row>
+                                                        <sui-grid-column :computer="5" :mobile="16" :stackable="true">
+                                                            <sui-form>
+                                                                <sui-form-field>
+                                                                  <label>Share</label>
+                                                                  <sui-dropdown
+                                                                    placeholder="Share"
+                                                                    selection
+                                                                    :options="options"
+                                                                    v-model="current"
+                                                                  />
+                                                                </sui-form-field>
+                                                            </sui-form>
+                                                        </sui-grid-column>
+                                                        <sui-grid-column :computer="7" :mobile="null" :stackable="true" />
+                                                    </sui-grid-row>
+                                                </sui-grid>
                                             </sui-tab-pane>
                                         </sui-tab>
                                     </sui-grid-column>
@@ -50,7 +67,18 @@ export default {
     },
     data() {
         return {
-            loaded:false
+            loaded:false,
+            current: 1,
+            options: [
+                {
+                  text: 'Last',
+                  value: 1,
+                },
+                {
+                  text: '2018-2019',
+                  value: 2,
+                },
+            ],
         }
     },
     components:{
