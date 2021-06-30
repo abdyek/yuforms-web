@@ -4,8 +4,8 @@
             <sui-grid>
                 <sui-grid-row >
                     <sui-grid-column :computer="5" />
-                    <sui-grid-column v-if="signInInputView" :computer="6" :mobile="16">
-                        <sui-segment color="teal" :loading="formLoading">
+                    <sui-grid-column :computer="6" :mobile="16">
+                        <sui-segment color="teal" :loading="loaded===false">
                             <sui-grid>
                                 <sui-grid-row>
                                     <sui-grid-column :width="16" :stackable="true">
@@ -14,10 +14,8 @@
                                             <sui-form-field :error="emailFieldError">
                                                 <label>E-mail</label>
                                                 <input placeholder="E-mail" type="email" @change="this.checkEmail" v-model="email" />
+                                                <sui-label v-if="emailFieldError" basic color="red" pointing>Invalid email</sui-label>
                                             </sui-form-field>
-                                            <sui-message v-if="emailFieldError" color="red">
-                                              <p>Invalid email</p>
-                                            </sui-message>
                                             <sui-form-field :error="firstNameFieldError">
                                                 <label>First Name</label>
                                                 <input placeholder="First Name" type="text" v-model="firstName"/>
@@ -29,20 +27,13 @@
                                             <sui-form-field :error="passwordFieldError">
                                                 <label>Password</label>
                                                 <input placeholder="Password" type="password" @change="this.checkPassword" v-model="password"/>
+                                                <sui-label v-if="passwordFieldError" basic color="red" pointing>Length of password must be in 10-50 range</sui-label>
                                             </sui-form-field>
-                                            <sui-message v-if="passwordFieldError" color="red">
-                                              <p>Length of password must be in 10-50 range</p>
-                                            </sui-message>
                                             <sui-form-field :error="passwordAgainFieldError">
                                                 <label>Password Again</label>
                                                 <input placeholder="Password Again" type="password" @change="this.checkPasswordAgain" v-model="passwordAgain"/>
+                                                <sui-label v-if="passwordAgainFieldError" basic color="red" pointing>Password again is not equal password</sui-label>
                                             </sui-form-field>
-                                            <sui-message v-if="passwordAgainFieldError" color="red">
-                                                <p>Password again is not equal password</p>
-                                            </sui-message>
-                                            <sui-message v-if="this.errorMessageShow" color="red">
-                                                <p>{{this.errorMessage}}</p>
-                                            </sui-message>
                                         </sui-form>
                                     </sui-grid-column>
                                 </sui-grid-row>
@@ -52,37 +43,13 @@
                                     <sui-grid-column :width="8" :stackable="true">
                                         <sui-button content="Sign In" color="blue" @click="goSignInPage"/>
                                     </sui-grid-column>
-                                    <sui-grid-column :width="8" :stackable="true" @click="sendRequest">
+                                    <sui-grid-column :width="8" :stackable="true" @click="signUp">
                                         <sui-button content="Sign Up" floated="right" color="teal"/>
                                     </sui-grid-column>
                                 </sui-grid-row>
                             </sui-grid>
                         </sui-segment>
                     </sui-grid-column>
-                    <sui-grid-column v-else :computer="6" :mobile="16">
-                        <sui-grid>
-                            <sui-grid-row>
-                                <sui-grid-column :width="16">
-                                    <sui-message color="blue">
-                                        <sui-message-header>Succesfully Registered</sui-message-header>
-                                          <p>
-                                            You can login the account after verification your email
-                                          </p>
-                                    </sui-message>
-                                </sui-grid-column>
-                            </sui-grid-row>
-                        </sui-grid>
-                        <sui-grid>
-                            <sui-grid-row>
-                                <sui-grid-column :width="16">
-                                    <sui-grid centered >
-                                        <sui-button size="large" content="Verify Email" color="teal" @click="goVerifyEmailPage"/>
-                                    </sui-grid>
-                                </sui-grid-column>
-                            </sui-grid-row>
-                        </sui-grid>
-                    </sui-grid-column>
-                    <sui-grid-column :computer="5" />
                 </sui-grid-row>
             </sui-grid>
         </sui-container>
@@ -91,6 +58,9 @@
 <script>
 import router from '@/router'
 import {validateEmail} from '@/tools'
+import { mapState } from 'vuex'
+import axios from 'axios'
+import Swal from 'sweetalert2'
 export default {
     name: 'SignUp',
     methods: {
@@ -110,28 +80,74 @@ export default {
         checkPasswordAgain() {
             this.passwordAgainFieldError = (this.password!==this.passwordAgain)
         },
-        sendRequest() {
-            this.formLoading = true
-            // request will be here
-            // this.formLoading = false
+        signUp() {
+            if(this.emailFieldError===false &&
+            this.firstNameFieldError===false &&
+            this.lastNameFieldError===false &&
+            this.passwordFieldError===false &&
+            this.passwordAgainFieldError===false) {
+                this.loaded = false
+                axios.post('/api/signUp', {
+                    email: this.email,
+                    firstName: this.firstName,
+                    lastName: this.lastName,
+                    password: this.password
+                }).then((response)=>{
+                    if(response.data.state==='success') {
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'You are registered successfully',
+                            text: 'You have to verify your email to sign in',
+                            showConfirmButton: true,
+                        })
+                        this.$store.commit('setVerifyEmailFromSignUp', true)
+                        router.push({'name': 'verifyEmail'})
+                    }
+                }).catch((error)=>{
+                    if(typeof error.response === 'undefined') {
+                        console.log(error)
+                    } else if(error.response.status===422) {
+                        Swal.fire('Already Registered Email', 'This email registered already. If you forget your password reset password', 'error')
+                    }
+                }).then(()=>{
+                    this.loaded = true
+                })
+            }
+        }
+    },
+    computed: {
+        ...mapState([
+            'emailField',
+            'passwordField'
+        ]),
+        email: {
+            get() {
+                return this.emailField
+            },
+            set(value) {
+                this.$store.commit('setEmailField', value)
+            }
+        },
+        password: {
+            get() {
+                return this.passwordField
+            },
+            set(value) {
+                this.$store.commit('setPasswordField', value)
+            }
         }
     },
     data() {
         return {
-            formLoading:false,
+            loaded:true,
             emailFieldError:false,
             firstNameFieldError:false,
             lastNameFieldError:false,
             passwordFieldError:false,
             passwordAgainFieldError:false,
-            email:"",
             firstName:"",
             lastName:"",
-            password:"",
-            passwordAgain:"",
-            signInInputView:true,
-            errorMessageShow:false,
-            errorMessage: "ErrorMessage"
+            passwordAgain:""
         }
     }
 }

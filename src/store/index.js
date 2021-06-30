@@ -10,6 +10,9 @@ Vue.use(Vuex)
 const state = {
     who: 'guest',
     member: {},
+    emailField: "",
+    verifyEmailFromSignUp: false,
+    passwordField:"",
     myFormsModels: [
         {
             "id": 1,
@@ -246,6 +249,15 @@ const mutations = {
     },
     setAnswers(state, answers) {
         Vue.set(state, 'answers', answers)
+    },
+    setEmailField(state, email) {
+        state.emailField = email
+    },
+    setVerifyEmailFromSignUp(state, value) {
+        state.verifyEmailFromSignUp = value
+    },
+    setPasswordField(state, password) {
+        state.passwordField = password
     }
 }
 

@@ -19,9 +19,6 @@
                                                 <label>Password</label>
                                                 <input placeholder="Password" type="password" v-model="password"/>
                                             </sui-form-field>
-                                            <sui-message v-if="this.errorMessageShow" color="red">
-                                                <p>{{this.errorMessage}}</p>
-                                            </sui-message>
                                         </sui-form>
                                     </sui-grid-column>
                                 </sui-grid-row>
@@ -47,15 +44,32 @@
 <script>
 import router from '@/router'
 import axios from 'axios'
+import Swal from 'sweetalert2'
 export default {
     name: 'SignIn',
     data() {
         return {
             formLoading:false,
             errorMessageShow:false,
-            errorMessage:"error message",
-            email:"",
-            password:""
+            errorMessage:"error message"
+        }
+    },
+    computed: {
+        email: {
+            get() {
+                return this.$store.state.emailField
+            },
+            set(value) {
+                this.$store.commit('setEmailField', value)
+            }
+        },
+        password: {
+            get() {
+                return this.$store.state.passwordField
+            },
+            set(value) {
+                this.$store.commit('setPasswordField', value)
+            }
         }
     },
     methods: {
@@ -68,24 +82,42 @@ export default {
                 "email":this.email,
                 "password":this.password
             }).then((response)=>{
-                this.formLoading = false
-                this.$store.commit('setWho', response.data.who)
-                router.push({name: 'myForms'})
-            }).catch((error)=>{
-                console.log(error)
-                const code = error.response.status
-                if(code===401) {
-                    this.errorMessage = 'Incorrect email or password'
-                    this.errorMessageShow = true
-                } else if(code===403) {
-                    this.errorMessage = 'Already signed in'
-                    this.errorMessageShow = true
-                } else if(code===400) {
-                    this.errorMessage = 'Invalid request'
-                    this.errorMessageShow = true
-                } else {
-                    console.log(error.response)
+                if(response.data.state==='success') {
+                    this.$store.commit('setWho', response.data.who)
+                    if(response.data.who==='member') {
+                        this.$store.commit('setMember', response.data.info)
+                    }
+                    router.push({name: 'myForms'})
+                } else if(response.data.state==='fail') {
+                    this.$store.commit('setVerifyEmailFromSignUp', true)
+                    router.push({'name': 'verifyEmail'})
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Not Email Verified',
+                        text: 'You have to verify your email to sign in',
+                        showConfirmButton: true,
+                    })
                 }
+            }).catch((error)=>{
+                if(typeof error.response ==='undefined') {
+                    console.log(error)
+                    return
+                }
+                const code = error.response.status
+                if(code===401 || code===400) {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Incorrect Email or Password',
+                        showConfirmButton: true,
+                    })
+                } else if(code===403) {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Already Signed Id',
+                        showConfirmButton: true,
+                    })
+                } 
+            }).then(()=>{
                 this.formLoading = false
             })
         }
