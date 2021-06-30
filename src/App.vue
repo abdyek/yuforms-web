@@ -62,4 +62,10 @@ export default {
 .text-align-center {
     text-align:center !important;
 }
+.yuforms-centered {
+    margin-top:0 !important;
+    margin-left:auto !important;
+    margin-right:auto !important;
+    display:block !important;
+}
 </style>

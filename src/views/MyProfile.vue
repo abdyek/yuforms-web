@@ -19,6 +19,23 @@
                     </sui-grid-column>
                 </sui-grid-row>
             </sui-grid>
+            <sui-grid>
+                <sui-grid-row>
+                    <sui-grid-column>
+                        <sui-grid>
+                            <sui-grid-row>
+                                <sui-grid-column>
+                                    <h3 is="sui-header">
+                                        <sui-icon name="setting" />
+                                        <sui-header-content>Settings</sui-header-content>
+                                    </h3>
+                                </sui-grid-column>
+                            </sui-grid-row>
+                        </sui-grid>
+                        <Settings />
+                    </sui-grid-column>
+                </sui-grid-row>
+            </sui-grid>
         </sui-container>
     </div>
 </template>
@@ -26,6 +43,7 @@
 import { mapState } from 'vuex'
 import axios from 'axios'
 import Swal from 'sweetalert2'
+import Settings from '@/components/profile/Settings.vue'
 export default {
     name: 'MyProfile',
     computed: {
@@ -56,6 +74,9 @@ export default {
                 }
             })
         }
+    },
+    components : {
+        Settings
     }
 }
 </script>
