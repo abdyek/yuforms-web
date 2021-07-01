@@ -33,6 +33,11 @@
                                     </sui-grid-column>
                                 </sui-grid-row>
                             </sui-grid>
+                            <sui-grid>
+                                <sui-grid-row>
+                                    <router-link class="yuforms-centered" to="/forgot-my-password">Forgot My Password</router-link>
+                                </sui-grid-row>
+                            </sui-grid>
                         </sui-segment>
                     </sui-grid-column>
                     <sui-grid-column :computer="5" />

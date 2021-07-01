@@ -11,6 +11,7 @@ import EditForm from '@/views/EditForm.vue'
 import Home from '@/views/Home.vue'
 import NotFound from '@/views/NotFound.vue'
 import Submit from '@/views/Submit.vue'
+import ForgotMyPassword from '@/views/ForgotMyPassword.vue'
 
 Vue.use(VueRouter)
 
@@ -69,6 +70,11 @@ const routes = [
         path: '/submit/:formSlug',
         name: 'submit',
         component: Submit
+    },
+    {
+        path: '/forgot-my-password',
+        name: 'forgotMyPassword',
+        component: ForgotMyPassword
     }
 ]
 
