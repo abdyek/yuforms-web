@@ -6,17 +6,21 @@
         <sui-tab-pane title="Change Email">
             <ChangeEmail />
         </sui-tab-pane>
-        <sui-tab-pane title="Change Password">change password setting here</sui-tab-pane>
+        <sui-tab-pane title="Change Password">
+            <ChangePassword />
+        </sui-tab-pane>
     </sui-tab>
 </template>
 <script>
 import Manage2FA from '@/components/profile/settings/Manage2FA.vue'
 import ChangeEmail from '@/components/profile/settings/ChangeEmail.vue'
+import ChangePassword from '@/components/profile/settings/ChangePassword.vue'
 export default {
     name: 'Settings',
     components : {
         Manage2FA,
-        ChangeEmail
+        ChangeEmail,
+        ChangePassword
     }
 }
 </script>
