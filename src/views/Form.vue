@@ -12,25 +12,8 @@
                                             <sui-tab-pane title="Questions">
                                                 <Questions :readOnly="true" :questions="questionModels"/>
                                             </sui-tab-pane>
-                                            <sui-tab-pane title="Answers">
-                                                <sui-grid>
-                                                    <sui-grid-row>
-                                                        <sui-grid-column :computer="5" :mobile="16" :stackable="true">
-                                                            <sui-form>
-                                                                <sui-form-field>
-                                                                  <label>Share</label>
-                                                                  <sui-dropdown
-                                                                    placeholder="Share"
-                                                                    selection
-                                                                    :options="options"
-                                                                    v-model="current"
-                                                                  />
-                                                                </sui-form-field>
-                                                            </sui-form>
-                                                        </sui-grid-column>
-                                                        <sui-grid-column :computer="7" :mobile="null" :stackable="true" />
-                                                    </sui-grid-row>
-                                                </sui-grid>
+                                            <sui-tab-pane title="Answers" :disabled="emptyShare">
+                                                <Shares />
                                             </sui-tab-pane>
                                         </sui-tab>
                                     </sui-grid-column>
@@ -56,34 +39,29 @@
 import { mapState, mapActions } from 'vuex'
 import FormCard from '@/components/form/FormCard.vue'
 import Questions from '@/components/question/Questions.vue'
+import Shares from '@/components/share/Shares.vue'
 import Loading from '@/components/Loading.vue'
 export default {
     name: 'Form',
     computed: {
         ...mapState([
             'formModel',
-            'questionModels'
-        ])
+            'questionModels',
+            'shareModels'
+        ]),
+        emptyShare() {
+            return this.shareModels.length === 0
+        }
     },
     data() {
         return {
-            loaded:false,
-            current: 1,
-            options: [
-                {
-                  text: 'Last',
-                  value: 1,
-                },
-                {
-                  text: '2018-2019',
-                  value: 2,
-                },
-            ],
+            loaded:false
         }
     },
     components:{
         FormCard,
         Questions,
+        Shares,
         Loading
     },
     methods: {

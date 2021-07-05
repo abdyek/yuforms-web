@@ -179,7 +179,40 @@ const state = {
     ],
     newFormModel: clone(defaultValues.newFormModel),
     submitted:false,
-    answers: {}
+    answers: {},
+    shareModels: [
+        {
+            "id": 19,
+            "startDateTime": {
+                "date": "2021-07-02 02:43:02.000000",
+                "timezone_type": 3,
+                "timezone": "Europe/Istanbul"
+            },
+            "stopDateTime": {
+                "date": "2021-07-02 12:14:58.000000",
+                "timezone_type": 3,
+                "timezone": "Europe/Istanbul"
+            },
+            "onlyMember": false,
+            "submitCount": 0
+        },
+        {
+            "id": 20,
+            "startDateTime": {
+                "date": "2021-07-02 02:43:02.000000",
+                "timezone_type": 3,
+                "timezone": "Europe/Istanbul"
+            },
+            "stopDateTime": {
+                "date": "2021-07-02 12:14:58.000000",
+                "timezone_type": 3,
+                "timezone": "Europe/Istanbul"
+            },
+            "onlyMember": false,
+            "submitCount": 0
+        }
+    ],
+    currentlyViewedShare: 19
 }
 
 const getters = {
@@ -258,6 +291,12 @@ const mutations = {
     },
     setPasswordField(state, password) {
         state.passwordField = password
+    },
+    setCurrentlyViewedShare(state, value) {
+        state.currentlyViewedShare = value
+    },
+    setShareModels(state, models) {
+        state.shareModels = models
     }
 }
 
@@ -277,6 +316,10 @@ const actions = {
         }).then((response)=>{
             commit('setFormModel', response.data.form)
             commit('setQuestionModels', {'questions':response.data.questions})
+            commit('setShareModels', response.data.shares)
+            if(response.data.shares.length>1) {
+                commit('setCurrentlyViewedShare', response.data.shares[0].id)
+            }
             commit('setAnswers', generateEmptyAnswers(response.data.questions))
         }).catch((error)=>{
             if(error.response.status===404) {
