@@ -212,7 +212,40 @@ const state = {
             "submitCount": 0
         }
     ],
-    currentlyViewedShare: 19
+    currentlyViewedShare: 19,
+    answerModels: [
+        {
+            "userType": "member",
+            "info": {
+                "id": 1,
+                "email": "yunusemrebulut123@gmail.com",
+                "firstName": "Yunus Emre",
+                "lastName": "Bulut",
+                "confirmedEmail": null,
+                "haveTo2fa": null
+            },
+            "answers": [
+                {
+                    "id": 16,
+                    "questionId": 12,
+                    "answer": "Keçeciler",
+                    "multiResponse": false
+                },
+                {
+                    "id": 17,
+                    "questionId": 13,
+                    "answer": "10",
+                    "multiResponse": false
+                },
+                {
+                    "id": 18,
+                    "questionId": 14,
+                    "answer": "12-13-14",
+                    "multiResponse": true
+                }
+            ]
+        }
+    ]
 }
 
 const getters = {
@@ -297,6 +330,9 @@ const mutations = {
     },
     setShareModels(state, models) {
         state.shareModels = models
+    },
+    setAnswerModels(state, models) {
+        state.answerModels = models
     }
 }
 
@@ -317,7 +353,7 @@ const actions = {
             commit('setFormModel', response.data.form)
             commit('setQuestionModels', {'questions':response.data.questions})
             commit('setShareModels', response.data.shares)
-            if(response.data.shares.length>1) {
+            if(response.data.shares.length>=1) {
                 commit('setCurrentlyViewedShare', response.data.shares[0].id)
             }
             commit('setAnswers', generateEmptyAnswers(response.data.questions))
@@ -365,6 +401,10 @@ const actions = {
                 formModel.stillShared = response.data.stillShared
                 formModel.share = null //response.data.share
                 commit('setFormModel', formModel)
+                commit('setShareModels', response.data.shares)
+                if(response.data.shares.length>=1) {
+                    commit('setCurrentlyViewedShare', response.data.shares[0].id)
+                }
             } else {
                 // ^ from MyForms view
                 const models = getters.getMyFormsModels
@@ -388,6 +428,10 @@ const actions = {
                 formModel.stillShared = response.data.stillShared
                 formModel.share = response.data.share
                 commit('setFormModel', formModel)
+                commit('setShareModels', response.data.shares)
+                if(response.data.shares.length>=1) {
+                    commit('setCurrentlyViewedShare', response.data.shares[0].id)
+                }
             } else {
                 // ^ from MyForms view
                 const models = getters.getMyFormsModels
