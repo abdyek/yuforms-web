@@ -30,6 +30,9 @@ export default {
             'answerModels'
         ]),
     },
+    mounted() {
+        this.changeUser(this.selected)
+    },
     methods: {
         ...mapActions([
             'fillAnswers'

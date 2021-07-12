@@ -1,5 +1,14 @@
 <template>
-    <sui-grid>
+    <sui-grid v-if="answerModels.length===0">
+        <sui-grid-row>
+            <sui-grid-column>
+                <sui-message color="blue">
+                    <p>No answer yet for this sharing</p>
+                </sui-message>
+            </sui-grid-column>
+        </sui-grid-row>
+    </sui-grid>
+    <sui-grid v-else>
         <sui-grid-row>
             <sui-grid-column :width="5">
                 <Selector />

@@ -13,7 +13,7 @@
                     <sui-grid>
                         <sui-grid-row>
                             <sui-grid-column>
-                                <TypeWrapper :type="question.formComponent.name" :question="question"/>
+                                <TypeWrapper :type="question.formComponent.name" :question="question" :readOnly="readOnly"/>
                             </sui-grid-column>
                         </sui-grid-row>
                     </sui-grid>
@@ -30,6 +30,10 @@ export default {
         question:{
             type:Object,
             required:true
+        },
+        readOnly: {
+            type:Boolean,
+            default:false
         }
     },
     components: {

@@ -18,8 +18,21 @@
                 <sui-grid-column :computer="7" :mobile="null" :stackable="true" />
             </sui-grid-row>
         </sui-grid>
-        <Statistics />
-        <Answers />
+        <div v-if="loaded">
+            <Statistics />
+            <Answers />
+        </div>
+        <sui-grid v-else>
+            <sui-grid-row>
+                <sui-grid-column :width="16">
+                    <sui-grid :centered="true" >
+                        <div class="loader-wrapper">
+                            <sui-loader  active inline size="massive" />
+                        </div>
+                    </sui-grid>
+                </sui-grid-column>
+            </sui-grid-row>
+        </sui-grid>
     </div>
 </template>
 <script>
@@ -29,6 +42,11 @@ import Statistics from '@/components/answer/Statistics.vue'
 import Answers from '@/components/answer/Answers.vue'
 export default {
     name: 'Shares',
+    data() {
+        return {
+            loaded:true
+        }
+    },
     computed: {
         ...mapState([
             'shareModels',
@@ -55,14 +73,27 @@ export default {
             },
             set(value) {
                 this.$store.commit('setCurrentlyViewedShare', value)
-                axios.get('/api/share', {
-                    params: {
-                        id:value
-                    }
-                }).then((response)=>{
-                    this.$store.commit('setAnswerModels', response.data.answers)
-                })
+                this.fetchShare(value)
             }
+        },
+    },
+    mounted() {
+        if(this.shareModels.length>0) {
+            this.fetchShare(this.shareModels[0].id)
+        }
+    },
+    methods: {
+        fetchShare(id) {
+            this.loaded = false
+            axios.get('/api/share', {
+                params: {
+                    id:id
+                }
+            }).then((response)=>{
+                this.$store.commit('setAnswerModels', response.data.answers)
+            }).then(()=>{
+                this.loaded=true
+            })
         }
     },
     components: {
@@ -71,3 +102,9 @@ export default {
     }
 }
 </script>
+<style scoped>
+.loader-wrapper {
+    padding-top:2rem;
+    padding-bottom:2rem;
+}
+</style>

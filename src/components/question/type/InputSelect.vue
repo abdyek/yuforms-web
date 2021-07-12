@@ -4,12 +4,12 @@
             <sui-form-fields grouped>
                 <div v-if="single===true">
                     <sui-form-field v-for="(opt, index) in options" :key="index">
-                        <sui-checkbox :radio="true" :name="questionId.toString()" :label="opt.text" :value="opt.id.toString()" v-model="answer" />
+                        <sui-checkbox :radio="true" :name="questionId.toString()" :label="opt.text" :value="opt.id.toString()" v-model="answer" :disabled="readOnly"/>
                     </sui-form-field>
                 </div>
                 <div v-else>
                     <sui-form-field v-for="(opt, index) in options" :key="index">
-                        <sui-checkbox :radio="false" :name="questionId.toString()" :label="opt.text" :value="opt.id.toString()" v-model="answers[questionId][opt.id]" @change="change(questionId, opt.id, answers[questionId][opt.id])"/>
+                        <sui-checkbox :radio="false" :name="questionId.toString()" :label="opt.text" :value="opt.id.toString()" v-model="answers[questionId][opt.id]" @change="change(questionId, opt.id, answers[questionId][opt.id])" :disabled="readOnly"/>
                     </sui-form-field>
                 </div>
             </sui-form-fields>
@@ -32,6 +32,10 @@ export default {
         },
         questionId: {
             type:Number
+        },
+        readOnly: {
+            type:Boolean,
+            default:false
         }
     },
     methods: {

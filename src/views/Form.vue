@@ -10,7 +10,7 @@
                                     <sui-grid-column>
                                         <sui-tab>
                                             <sui-tab-pane title="Questions">
-                                                <Questions :readOnly="true" :questions="questionModels"/>
+                                                <Questions :questions="questionModels" :layout="true"/>
                                             </sui-tab-pane>
                                             <sui-tab-pane title="Answers" :disabled="emptyShare">
                                                 <Shares />

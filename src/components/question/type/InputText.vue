@@ -2,7 +2,7 @@
     <div>
         <sui-form>
             <sui-form-field>
-                <input type="text" :placeholder="this.placeholder" v-model="answer"/>
+                <input type="text" :placeholder="this.placeholder" v-model="answer" :disabled="readOnly"/>
             </sui-form-field>
         </sui-form>
     </div>
@@ -19,6 +19,10 @@ export default {
         },
         questionId: {
             type: Number
+        },
+        readOnly: {
+            type:Boolean,
+            default:false
         }
     },
     methods: {

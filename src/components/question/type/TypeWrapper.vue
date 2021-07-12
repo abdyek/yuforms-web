@@ -1,8 +1,8 @@
 <template>
     <div>
-        <InputText v-if="this.type==='input-text'" :placeholder="question.questionText" :questionId="question.id"/>
-        <InputSelect v-else-if="this.type==='input-radio'" :options="question.options" :questionId="question.id"/>
-        <InputSelect v-else-if="this.type==='input-checkboxes'" :single="false" :options="question.options" :questionId="question.id"/>
+        <InputText v-if="this.type==='input-text'" :placeholder="question.questionText" :questionId="question.id" :readOnly="readOnly"/>
+        <InputSelect v-else-if="this.type==='input-radio'" :options="question.options" :questionId="question.id" :readOnly="readOnly"/>
+        <InputSelect v-else-if="this.type==='input-checkboxes'" :single="false" :options="question.options" :questionId="question.id" :readOnly="readOnly"/>
     </div>
 </template>
 <script>
@@ -17,6 +17,10 @@ export default {
         },
         question: {
             type:Object
+        },
+        readOnly: {
+            type:Boolean,
+            default:false
         }
     },
     components: {
